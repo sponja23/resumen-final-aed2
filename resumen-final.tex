@@ -900,11 +900,11 @@ Para otros costos de conquer $f(n)$, se puede aplicar el \textbf{Teorema Maestro
 
     Su fórmula cerrada es:
     \begin{enumerate}
-        \item Cuando $f(n) \in \BigO{n^{\log_c{a} - \epsilon}}$ para algún $\epsilon > 0$.
+        \item Cuando $f(n) \in \BigO{n^{\log_c{a} - \epsilon}}$ para algún $\epsilon > 0$,
             $$T(n) \in \BigTheta{n^{\log_c{a}}}$$
-        \item Cuando $f(n) \in \BigTheta{n^{\log_c{a}}}$
+        \item Cuando $f(n) \in \BigTheta{n^{\log_c{a}}}$,
             $$T(n) \in \BigTheta{n^{\log_c{a}} \log{n}}$$
-        \item Cuando $f(n) \in \BigOmega{n^{\log_c{a} + \epsilon}}$ y $a f\left(\frac{n}{c}\right) < k k(n)$ para $k < 1$ y $n$ suficientemente grande.
+        \item Cuando $f(n) \in \BigOmega{n^{\log_c{a} + \epsilon}}$ y $a f\left(\frac{n}{c}\right) \leq k f(n)$ para $k < 1$ y $n$ suficientemente grande,
             $$T(n) \in \BigTheta{f(n)}$$
     \end{enumerate}
 
