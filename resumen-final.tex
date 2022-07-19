@@ -14,6 +14,7 @@
 \usepackage{graphics}
 \usepackage{algorithm, algpseudocode}
 \usepackage{tikz}
+\usepackage{multirow}
 
 \graphicspath{{img/}}
 
@@ -48,7 +49,7 @@
 
 Un \textit{Tipo Abstracto de Datos} (TAD) está definido por un \textbf{tipo}, es decir, un conjunto de valores y operaciones entre los mismos, y la \textbf{semántica} de esas operaciones (en este caso, se describe a través de \textbf{axiomas}).
 
-Los TADs se diseñan a partir de la especificación informal de un problema. Un paso importante es el de \textbf{abstracción}, que consiste en identificar los aspectos importantes del problema e ignorar el resto de los detalles.
+Los TADs se diseñan a partir de la especificación informal de un problema. Un paso importante es el de \textbf{abstracción}, que consiste en identificar los aspectos relevantes del problema e ignorar el resto de los detalles.
 
 Por otro lado, un TAD no especifica ninguna implementación del comportamiento que describe: delinea el qué, y no el cómo.
 
@@ -58,8 +59,8 @@ Formalmente, cada TAD define una teoría de primer orden con igualdad. Esto se l
 
 Las siguientes son las posibles secciones incluidas en la definición de un TAD.
 \begin{itemize}
-    \item \textbf{Parámetros formales:} Son los tipos y operaciones requiridas por los TADs paramétricos.
-    \item \textbf{Igualdad Observacional:} Define el criterio bajo el cuál las instancias de un TAD son indistinguibles.
+    \item \textbf{Parámetros formales:} Son los tipos y operaciones requeridas por los TADs paramétricos.
+    \item \textbf{Igualdad Observacional:} Define el criterio bajo el cual las instancias de un TAD son indistinguibles.
     \item \textbf{Género:} Es el nombre que recibe el conjunto de valores del tipo.
     \item \textbf{Usa:} Incluye los géneros y operaciones externas con las que interactúa el TAD.
     \item \textbf{Exporta:} Las operaciones y géneros que quedan a disposición de usuarios del tipo.
@@ -75,7 +76,7 @@ Las siguientes son las posibles secciones incluidas en la definición de un TAD.
     \item \textbf{Sobreespecificación:} La sobreespecificación se da cuando varios axiomas aplican a la misma instancia, lo cual causa inconsistencias lógicas. Para evitarla, es importante recordar que los TADs no admiten ``pattern matching'': el orden de los axiomas no tiene ningún efecto sobre su aplicación.
     \item \textbf{Subespecificación:} Implica no definir axiomas sobre el comportamiento de una operación para ciertas instancias del tipo. No siempre es un problema, como en el caso de \textit{dameUno} del TAD \textsc{CONJUNTO}.
     \item \textbf{Casos Restringidos:} Los axiomas no deben especificar sobre casos restringidos, ya que están fuera del dominio.
-    \item \textbf{Incongruencia:} Se da cuando una de las operaciones de un TAD no es \textit{congruente}\footnote{Una función $f$ es congruente con respecto a una relación de equivalencia $\sim$ cuando $\forall x, y,\ \ x \sim y \Longleftrightarrow f(x) \sim f(y) $} con respecto a la igualdad observacional, es decir, se vuelve posible diferenciar elementos dentro de la misma clase de equivalencia de esta relación.
+    \item \textbf{Incongruencia:} Se da cuando una de las operaciones de un TAD no es \textit{congruente}\footnote{Una función $f$ es congruente con respecto a una relación de equivalencia $\sim$ cuando $\forall x, y,\ \ x \sim y \Longleftrightarrow f(x) \sim f(y) $.} con respecto a la igualdad observacional, es decir, se vuelve posible diferenciar elementos dentro de la misma clase de equivalencia de esta relación.
 \end{itemize}
 
 Una buena práctica para evitar errores es axiomatizar los observadores básicos sobre todos los generadores no restringidos, y definir las otras operaciones utilizándolos. De esta forma se puede garantizar la congruencia con respecto a la igualdad observacional.
@@ -265,7 +266,7 @@ Llevar a cabo un proceso de diseño jerárquico significa definir representacion
 
 Habiendo establecido los principios generales que va a seguir el diseño, la metodología es la siguiente:
 \begin{itemize}
-    \item Elección del tipo a diseñar (empezando por el más abar).
+    \item Elección del tipo a diseñar (empezando por el más abarcativo).
     \item Introducció de elementos \textit{no funcionales}.
     \item Vinculación entre la \textit{representación} y su \textit{abstracción}.
     \item Iteración sobre los tipos restantes (filosofía \textit{top-down}).
@@ -278,7 +279,7 @@ Dentro de este proceso se tienen en cuenta 2 aspectos claves:
               \item \textbf{Servicios exportados:} describe para cada operación su complejidad, sus aspectos de \textit{aliasing}, los efectos colaterales sobre sus argumentos, etc.
               \item \textbf{Interfaz:} define en el paradigma imperativo las operaciones exportadas junto con sus precondiciones y postcondiciones, lo cual establece la correspondencia entre las operaciones de un TAD y sus implementaciones.
           \end{itemize}
-    \item Las \textit{pautas de implementación} son las cuestiones vincualadas a los medios a través de los cuales el tipo garantizas los aspectos de uso, y deben ser tenidas en cuenta por quienes implementen concretamente el diseño.
+    \item Las \textit{pautas de implementación} son las cuestiones vincualadas a los medios a través de los cuales el tipo garantiza los aspectos de uso, y deben ser tenidas en cuenta por quienes implementen concretamente el diseño.
 \end{itemize}
 
 \subsubsection{Transparencia referencial}
@@ -318,7 +319,7 @@ Definir la representación de un módulo implica satisfacer todos los requerimie
 
 La \textit{estructura de representación} describe los valores sobre los cuales se representa el género implementado, y por lo tanto debe poder representar todos los elementos de dicho género. Además, debe ser posible implementar todas las operaciones de acuerdo a las exigencias del contexto de uso.
 
-El \textit{invariante de representación} es un predicado que determina qué instancias de la estructura representan un elemento válido del género. Esto sirve como documentación, y además es una condición necesaria para establecer la relación de abstracción. También es una postcondición implícita que se agrega a todas las operaciones, garantizando que los algoritmos no rompan la estructura, así como una precondición, asegurando la validez de la misma\footnote{Su validez como precondición y postcondición es lo que le da el carácter de invariante}. El invariante de representación sobre una estructura $estr$ se denota como $Rep: \hat{estr} \rightarrow bool$.
+El \textit{invariante de representación} es un predicado que determina qué instancias de la estructura representan un elemento válido del género. Esto sirve como documentación, y además es una condición necesaria para establecer la relación de abstracción. También es una postcondición implícita que se agrega a todas las operaciones, garantizando que los algoritmos no rompan la estructura, así como una precondición, asegurando la validez de la misma\footnote{Su validez como precondición y postcondición es lo que le da el carácter de invariante.}. El invariante de representación sobre una estructura $estr$ se denota como $Rep: \hat{estr} \rightarrow bool$.
 
 \subsubsection{Función de abstracción}
 
@@ -326,7 +327,7 @@ La \textit{función de abstracción} es la herramienta que permite vincular una 
 
 \begin{itemize}
     \item Su dominio está restringido a la instacias de la estructura que cumplen el invariante de representación, pero es total sobre dicho dominio.
-    \item No necesita ser inyectiva: dos instancias validas pueden representar al mismo término de un TAD.
+    \item No necesita ser inyectiva: dos instancias válidas pueden representar al mismo término de un TAD.
     \item Debe ser suryectiva sobre las clases de equivalencia de la igualdad observacional.
 \end{itemize}
 
@@ -348,7 +349,7 @@ Un \textit{diccionario} es un tipo de datos abstracto que representa una colecci
 
 En este caso vamos a partir la búsqueda en las operaciones $def?$ y $obtener$, donde $def?$ indica si una clave tiene un significado asociado, y $obtener$ devuelve ese significado (tiene como restricción $\{def?(d, clave)\}$). Esto resalta la relación entre los diccionarios y los conjuntos: se puede implementar un conjunto como un caso particular de un diccionario, donde solo es posible usar la primera operación (es decir, donde las claves solo existen o no, no tienen significado).
 
-Esta es uno de los TADs más importantes de la computación. La forma más simple de implementarlo es una secuencia de pares, donde el primer elemento representa una clave y el segundo un significado. Esto resulta en complejidades \hyperref[table-dict-complexities]{bastante altas} (excepto para la inserción en el caso de un arreglo sin orden), así que no se usa mucho. Otra posibilidad sería usar un arreglo con una posición para cada clave posible (o un \textit{bitset} en el caso del conjunto). La desventaja de esto es que la inicialización y el consumo de espacio es de complejidad $\BigO{\#(\text{claves posibles})}$, lo cual en muchos casos no es factible.
+Este es uno de los TADs más importantes de la computación. La forma más simple de implementarlo es una secuencia de pares, donde el primer elemento representa una clave y el segundo un significado. Esto resulta en complejidades \hyperref[table-dict-complexities]{bastante altas} (excepto para la inserción en el caso de un arreglo sin orden), así que no se usa mucho. Otra posibilidad sería usar un arreglo con una posición para cada clave posible (o un \textit{bitset} en el caso del conjunto). La desventaja de esto es que la inicialización y el consumo de espacio es de complejidad $\BigO{\#(\text{claves posibles})}$, lo cual en muchos casos no es factible.
 
 
 En cambio, los diccionarios suelen implementarse de 2 maneras distintas: \textit{tablas de hash} (que veremos \hyperref[sec-hash-tables]{más adelante}) y \textit{árboles de búsqueda}.
@@ -419,11 +420,11 @@ Un \textit{árbol binario} es un árbol donde cada nodo tiene a lo sumo $2$ hijo
               \item Si el nodo tiene 2 hijos, se debe encontrar su predecesor inmediato o su sucesor inmediato. Por un lado, el predecesor inmediato es el nodo más a la derecha del subárbol izquierdo, y no puede tener hijo derecho (porque es el nodo que más a la derecha está), mientras que el sucesor inmediato es el nodo más a la izquierda del subárbol derecho, y, análogamente, no puede tener hijo izquierdo. Por lo tanto, se pueden intercambiar las posiciones de cualquiera de los dos, y borrar el nodo, que necesariamente tendrá a lo sumo un hijo, por lo cual se pueden usar los procedimientos anteriores.
           \end{itemize}
 
-          La complejidad de este algoritmo es similar a la de \textbf{Definir}, porque en todos los casos implicar buscar el nodo y realizar una operación constante.
+          La complejidad de este algoritmo es similar a la de \textbf{Definir}, porque en todos los casos implica buscar el nodo y realizar una operación constante.
 
 \end{itemize}
 
-Los problemas de complejidad del ABB podrían resolverse si el árbol tuviera una altura menor. Esto se podría lograr si estuviera \textit{balanceado}, ya que los árboles balanceados de $n$ elementos tiene a lo sumo $\log_2{n}$ niveles.
+Los problemas de complejidad del ABB podrían resolverse si el árbol tuviera una altura menor. Esto se podría lograr si estuviera \textit{balanceado}, ya que los árboles balanceados de $n$ elementos tienen a lo sumo $\log_2{(n)}$ niveles.
 
 \subsection{Árbol AVL}
 \label{subsec-avl}
@@ -464,11 +465,11 @@ Como la secuencia de Fibonacci crece exponencialmente (lo cual implica que $|AF_
 La estructura AVL mantiene el $FDB$ de cada nodo interno, para facilitar las operaciones de rebalanceo.
 
 \begin{itemize}
-    \item \textbf{Inserción}: La inserción de un AVL consta de 2 pasos. Primero se debe insertar el nodo de la misma forma que para un ABB, y luego realizar \textit{rotaciones} en caso de que el árbol haya quedado demasiado (es decir, queda con un factor de balanceo de $\pm 2$). Las rotaciones son operaciones que preservan la propiedad de ABB, y se realizan de la siguiente manera:
+    \item \textbf{Inserción}: La inserción de un AVL consta de 2 pasos. Primero se debe insertar el nodo de la misma forma que para un ABB, y luego realizar \textit{rotaciones} en caso de que el árbol haya quedado desbalanceado (es decir, queda con un factor de balanceo de $\pm 2$). Las rotaciones son operaciones que preservan la propiedad de ABB, y se realizan de la siguiente manera:
           \begin{figure}[H]
               \centering
               \includegraphics*[width=0.5\textwidth]{AVL_rotation.png}
-              \caption*{Ilustración de una rotación y su inversa}
+              \caption*{Ilustración de una rotación y su inversa.}
           \end{figure}
 
           Las rotaciones aplicadas se dividen en cuatro casos, donde se toma como referencia el nodo desbalanceado:
@@ -502,13 +503,13 @@ Las operaciones de inserción, búsqueda y borrado terminan siendo de complejida
 
 \section{Tries}
 
-La motivación para esta estructura de datos es obtener una implementación de los conjuntos/diccionarios con operaciones menos dependientes de la cantidad de claves, mantiniendo un rendimiento razonable en función del tamaño. Los \textit{tries} se basan en comparar partes claves parciales, en lugar de completas, lo cual las hace ideales para situaciones donde se usan strings como tipo de clave. La desventaja es que algunas implementaciones pueden requerir mucha memoria.
+La motivación para esta estructura de datos es obtener una implementación de los conjuntos/diccionarios con operaciones menos dependientes de la cantidad de claves, mantiniendo un rendimiento razonable en función del tamaño. Los \textit{tries} se basan en comparar claves parciales, en lugar de completas, lo cual los hace ideales para situaciones donde se usan strings como tipo de clave. La desventaja es que algunas implementaciones pueden requerir mucha memoria.
 
 \subsection{Árboles de búsqueda digital}
 
 Los \textit{árboles de búsqueda digital} (ABD) son similares a los ABB, en el sentido que para buscar una clave, se realiza una serie de comparaciones a lo largo del árbol. Sin embargo, algunas de estas comparaciones no son entre claves en sí, sino sus símbolos (bits, dígitos, caracteres, etc.), y son estas las que determinan las posiciones de las claves. La regla es que cada nodo se encuentra en una posición determinada por un prefijo de cierta longitud, y sus hijos son aquellas claves que comparten ese prefijo.
 
-La inserción de una nueva clave se logra de la siguiente manera: se recorre el árbol utilizando los símbolos de la clave, hasta llegar a un nodo vacío, donde se coloca la clave. Por otro lado, la búsqueda recorre el árbol de la siguiente manera, comparando cada nodo con la clave buscada. Estas operaciones, dada una clave de $b$ símbolos, realizan $\log{n}$ comparaciones \underline{entre claves} en promedio\footnote{Siendo $n$ la cantidad de claves en el diccionario} y $b$ en el peor caso.
+La inserción de una nueva clave se logra de la siguiente manera: se recorre el árbol utilizando los símbolos de la clave, hasta llegar a un nodo vacío, donde se coloca la clave. Por otro lado, la búsqueda recorre el árbol de la siguiente manera, comparando cada nodo con la clave buscada. Estas operaciones, dada una clave de $b$ símbolos, realizan $\log{n}$ comparaciones \underline{entre claves} en promedio\footnote{Siendo $n$ la cantidad de claves en el diccionario.} y $b$ en el peor caso.
 
 \subsection{Tries}
 
@@ -531,11 +532,11 @@ Un \textit{trie}, dado un alfabeto de $k$ elementos, es un árbol ${k+1}$-ario. 
 
     \subsubsection{Representación}
 
-    Las dos posibles representaciones de un trie se corresponden en las dos maneras de representar secuencias: memoria estática (arreglos) y memoria dinámica (listas). Esto se debe a que se está representando un árbol ${k+1}$-ario, y por lo tanto cada nodo debe guardar una referencia a todos sus hijos.
+    Las dos posibles representaciones de un trie se corresponden con las dos maneras de representar secuencias: memoria estática (arreglos) y memoria dinámica (listas). Esto se debe a que se está representando un árbol ${k+1}$-ario, y por lo tanto cada nodo debe guardar una referencia a todos sus hijos.
 
     \begin{itemize}
         \item \underline{Arreglos}: Cada nodo interno cuenta con un arreglo de punteros a sus subárboles, donde las posiciones de ese arreglo representan las aristas de los símbolos. Transitar el árbol se vuelve simple: solo hace falta acceder a las posiciones correspondientes de los arreglos para cada símbolo de la clave buscada/insertada. Sin embargo, esta implementación puede ser extremadamente ineficiente en términos de memoria, en especial cuando el alfabeto es grande y la cantidad de claves chica. Esto se podría mitigar agrupando los caracteres poco frecuentes.
-        \item \underline{Listas}: Los hijos de cada nodo se encuentran en una lista enlazada (opcionalmente ordenada), lo cual hace que recorrer el árbol requiera recorrer cada una de las listas de una rama de nodos. Esto es solo es eficiente en términos de tiempo cuando hay pocas claves, pero es mucho más eficiente en términos de espacio que la opción anterior.
+        \item \underline{Listas}: Los hijos de cada nodo se encuentran en una lista enlazada (opcionalmente ordenada), lo cual hace que recorrer el árbol requiera recorrer cada una de las listas de una rama de nodos. Esto solo es eficiente en términos de tiempo cuando hay pocas claves, pero es mucho más eficiente en términos de espacio que la opción anterior.
     \end{itemize}
 
     \subsubsection{Tries compactos}
@@ -572,7 +573,7 @@ Un \textit{trie}, dado un alfabeto de $k$ elementos, es un árbol ${k+1}$-ario. 
 
     Para lograr indexar la estructura utilizando otros tipos de datos, se aplica una función de correspondencia entre el tipo y un entero. Esta transformación depende de la implementación, pero \underline{debe} ser una función ($x = y \implies f(x) = f(y)$), y es ideal que sea inyectiva ($x = y \impliedby f(x) = f(y)$).
 
-    Esta función se denomina \textit{hash}, y tiene la forma $h: K \rightarrow \{0, ..., n-1\}$ donde $K$ es el génergo que contiene a las posibles claves del diccionario y n es el tamaño de la tabla de hash.
+    Esta función se denomina \textit{hash}, y tiene la forma $h: K \rightarrow \{0, ..., n-1\}$ donde $K$ es el género que contiene a las posibles claves del diccionario y $n$ es el tamaño de la tabla de hash.
 
     \subsection{Colisiones}
 
@@ -581,11 +582,11 @@ Un \textit{trie}, dado un alfabeto de $k$ elementos, es un árbol ${k+1}$-ario. 
     Más allá de la resolución de colisiones, una buena función de hash debería cumplir la propiedad de \textit{uniformidad simple}, que implica que todos los elementos de su imagen tienen probabilidades similares de ser resultado de alguna clave. Formalmente:
 $$\forall i \in \{0, ..., n-1\},\ \sum_{k \in K \mid h(k) = i} P(k) \approx \frac{1}{n}$$
 
-Debido a la dificultad (o imposibilidad) estimar la distribución de las claves, esta propiedad no suele cumplirse en la práctica, así que se intenta encontrar una función independiente de la distribución.
+Debido a la dificultad (o imposibilidad) de estimar la distribución de las claves, esta propiedad no suele cumplirse en la práctica, así que se intenta encontrar una función independiente de la distribución.
 
 \subsubsection{Direccionamiento por concatenación}
 
-El \textit{direccionamiento cerrado} o \textit{direccionamiento por concatenación} es simple: a cada posición $i$ del arreglo se le asigna una lista que contiene las claves $k$ (y significados asociados) tales que $h(k) = i$. La búsqueda e inserción de una clave $k$ requiere recorrer la lista asociada a $h(k)$ para encontrarla (o verificar que no está), así que su complejidad es proporcional a la longitud de dicha lista. Si definimos el \textit{factor de carga} $\alpha = \frac{n}{|T|}$, donde $n$ es la cantidad de llaves en la tabla $T$ y $|T|$ su tamaño máximo, se puede demostrar lo siguiente\footnote{Asumiendo la hipótesis de simplicidad uniforme de $h$}:
+El \textit{direccionamiento cerrado} o \textit{direccionamiento por concatenación} es simple: a cada posición $i$ del arreglo se le asigna una lista que contiene las claves $k$ (y significados asociados) tales que $h(k) = i$. La búsqueda e inserción de una clave $k$ requiere recorrer la lista asociada a $h(k)$ para encontrarla (o verificar que no está), así que su complejidad es proporcional a la longitud de dicha lista. Si definimos el \textit{factor de carga} $\alpha = \frac{n}{|T|}$, donde $n$ es la cantidad de llaves en la tabla $T$ y $|T|$ su tamaño máximo, se puede demostrar lo siguiente\footnote{Asumiendo la hipótesis de simplicidad uniforme de $h$.}:
 \begin{itemize}
     \item Una búsqueda fallida requiere en promedio tiempo $\BigTheta{1 + \alpha}$.
     \item Una búsqueda exitosa requiere en promedio tiempo $\BigTheta{1 + \frac{\alpha}{2}}$.
@@ -635,8 +636,8 @@ Esto presenta un problema: si se inserta una clave, luego se insertan otras que 
 
 La forma en la que se relaciona $h(k, i)$ con $h(k, i + 1)$ se denomina \textit{método de barrido}, y algunos son:
 \begin{itemize}
-    \item \textbf{Barrido linear}: $h(k, i + 1)$ = $h(k, i) + 1$\footnote{En todos los casos la función $h$ trabaja con aritmética$\mod{|T|}$, para evitar salir del rango del arreglo} (o, equivalentemente, $h(k, i)$ = $h(k) + i$). Es simple, pero es propensa a la \underline{aglomeración primaria}: si dos secuencias de barrido tienen una colisión, siguen colisionando, y se producen largos tramos de aglomeración ($h(k_1, i) = h(k_2, j) \implies h(k_1, i + a) = h(k_2, j + a) \forall a \in \mathbb{N}$).
-    \item \textbf{Barrido cuadrático}: En este caso, $h(k, i) = h(k) + c_1 i + c_2 i^2$, con $c_1, c_2$ constantes. Esto evita el problema anterior, pero sufre de \underline{aglomeración secundaria}, donde si dos claves colisionan en el primer intento, colisionan siempre.
+    \item \textbf{Barrido linear}: $h(k, i + 1)$ = $h(k, i) + 1$\footnote{En todos los casos la función $h$ trabaja con aritmética$\mod{|T|}$, para evitar salir del rango del arreglo.} (o, equivalentemente, $h(k, i)$ = $h(k) + i$). Es simple, pero es propensa a la \underline{aglomeración primaria}: si dos secuencias de barrido tienen una colisión, siguen colisionando, y se producen largos tramos de aglomeración ($h(k_1, i) = h(k_2, j) \implies h(k_1, i + a) = h(k_2, j + a) \ \forall a \in \mathbb{N}$).
+    \item \textbf{Barrido cuadrático}: En este caso, $h(k, i) = h(k) + c_1 i + c_2 i^2$, con $c_1, c_2$ constantes. Esto evita el problema anterior, pero sufre de \underline{aglomeración secundaria}, donde si dos claves colisionan en el primer intento, colisionan siempre ($h(k_1) = h(k_2) \implies h(k_1, i) = h(k_2, i) $).
     \item \textbf{Hashing doble}: Se define $h(k, i) = h_1(k) + i h_2(k)$, donde $h_1, h_2$ son dos funciones de hashing distintas. Esto reduce la aglomeración secundaria (y no tiene aglomeración primaria). El problema con este esquema es que es ineficiente en su uso del caché de la CPU (debido a que las claves colisionadas podrían quedar en posiciones distantes).
 \end{itemize}
 
@@ -665,7 +666,7 @@ Un \textit{heap} es un árbol binario perfectamente balanceado que cumple el sig
 
 \subsubsection{Representaciones}
 
-El heap admite cualquier representación de árboles binarios. Una opción podría ser la tradicional, donde cada nodo contiene su valor junto con punteros a sus hijos, pero en este caso la representación con arrays es particularmente eficiente. Consiste en almacenar los valores de los nodos un array, y relacionar a los padres con sus hijos a través de las posiciones: si $v$ es un nodo almacenado en la posición $p(v)$, su hijo izquierdo se almacena en $2p(v) + 1$, y el derecho en $2p(v) + 2$.
+El heap admite cualquier representación de árboles binarios. Una opción podría ser la tradicional, donde cada nodo contiene su valor junto con punteros a sus hijos, pero en este caso la representación con arrays es particularmente eficiente. Consiste en almacenar los valores de los nodos en un array, y relacionar a los padres con sus hijos a través de las posiciones: si $v$ es un nodo almacenado en la posición $p(v)$, su hijo izquierdo se almacena en $2p(v) + 1$, y el derecho en $2p(v) + 2$.
 
 Los arrays tienen la ventaja de ser muy eficientes en términos de espacio y de utilización de caché de CPU, pero su tamaño estático hace necesaria el uso de técnicas adicionales para agregar elementos (como la implementada en los arreglos dimensionables).
 
@@ -687,7 +688,7 @@ Los arrays tienen la ventaja de ser muy eficientes en términos de espacio y de 
           \end{algorithm}
 
           Este algoritmo corre en tiempo proporcional a la altura del árbol que, por ser perfectamente balanceado, está acotada por $\log_2{n}$ (y por ende se tiene una complejidad de $\BigTheta{\log{n}}$).
-    \item \textbf{Desencolar}: El algoritmo de desencolado es parecido al de inserción: se intercambia el elemento de la raíz con el último, eliminarlo, y percolar hacia abajo la nueva raíz este hasta restaurar el invariante de heap.
+    \item \textbf{Desencolar}: El algoritmo de desencolado es parecido al de inserción: consiste en intercambiar el elemento de la raíz con el último, eliminarlo, y percolar hacia abajo la nueva raíz de éste hasta restaurar el invariante de heap.
           \begin{algorithm}[H]
               \caption*{Desencolar en heap}
               \begin{algorithmic}
@@ -722,7 +723,7 @@ Ahora detallamos varios métodos de ordenamiento de secuencias.
 \begin{enumerate}
     \item Los elementos de $arr[0...i]$ son los $i+1$ más pequeños de todo el arreglo (y menores a todos los demás).
     \item Los elementos de $arr[0...i]$ están ordenados.
-    \item $arr$ es una permutación del arreglo original lo cual, junto con 1., implica que $arr[i+1...n)$ contiene a los $n - i - 1$ elementos más grandes del arreglo original).
+    \item $arr$ es una permutación del arreglo original lo cual, junto con 1., implica que $arr[i+1...n)$ contiene a los $n - i - 1$ elementos más grandes del arreglo original.
 \end{enumerate}
 
 \begin{algorithm}[H]
@@ -830,7 +831,7 @@ La operación más compleja de este algoritmo es realizar la partición. Se pued
 
 Para el problema de ordenamiento, se puede demostrar un \textit{lower bound} de $\BigOmega{n\log{n}}$, es decir, la complejidad mínima que tiene que cumplir un algoritmo que lo resuelve. En realidad, la cota vale para algoritmos que están basados en comparaciones: si se cuenta con alguna hipótesis adicional (como elementos acotados por un rango), se pueden implementar algoritmos más rápidos (como counting sort).
 
-Para demostrar eso, vamos a asumir que todas as comparaciones tienen la forma de $a_i$ < $a_j$, y que el resultado es siempre $verdadero$ o $falso$. Utilizamos la herramienta de \textit{árboles de decisión}, cuyas ramas representan todos los posibles caminos de cómputo que podría tomar un algoritmo. Los nodos internos representan las distintas comparaciones que se realizan, mientras que cada hoja se corresponde con una posible output del algoritmo. La altura del árbol representa la cantidad máxima de ejecuciones posibles.
+Para demostrar eso, vamos a asumir que todas las comparaciones tienen la forma de $a_i < a_j$, y que el resultado es siempre $verdadero$ o $falso$. Utilizamos la herramienta de \textit{árboles de decisión}, cuyas ramas representan todos los posibles caminos de cómputo que podría tomar un algoritmo. Los nodos internos representan las distintas comparaciones que se realizan, mientras que cada hoja se corresponde con una posible output del algoritmo. La altura del árbol representa la cantidad máxima de ejecuciones posibles.
 
 En el caso del ordenamiento, hay una hoja por cada permutación posible, así que tiene $n!$ nodos hoja. Esto implica que la altura mínima es $\BigOmega{\log{n!}} = \BigOmega{n\log{n}}$. Por ende, los algoritmos como merge sort y heap sort tiene una complejidad asintóticamente óptima.
 
@@ -994,11 +995,11 @@ Un algoritmo \textit{probabilístico} es uno que incorpora algún elemento de az
 
 \subsection{Skip lists}
 
-Las \textit{skip lists} son una representación de diccionarios basada en listas enlazadas ordenadas. Una implementación directa tendría una complejidad de búsqueda de peor caso de $\BigO{n}$: la lista solo puede ser recorrida secuencialmente, y si el elemento se encuentra al final, hay que recorrerla toda. Esto puede ser acelerado ``salteando'' elementos, que se logra agregando referencias a nodos posteriores. Por ejemplo, si todos los nodos en posiciones pares tienen referencias a la siguiente posición par, la búsqueda se peude implementar en $\left\lceil \frac{n}{2} \right\rceil + 1$ lookups.
+Las \textit{skip lists} son una representación de diccionarios basada en listas enlazadas ordenadas. Una implementación directa tendría una complejidad de búsqueda de peor caso de $\BigO{n}$: la lista solo puede ser recorrida secuencialmente, y si el elemento se encuentra al final, hay que recorrerla toda. Esto puede ser acelerado ``salteando'' elementos, que se logra agregando referencias a nodos posteriores. Por ejemplo, si todos los nodos en posiciones pares tienen referencias a la siguiente posición par, la búsqueda se puede implementar en $\left\lceil \frac{n}{2} \right\rceil + 1$ lookups.
 
 Las skip lists \textit{perfectas} extienden esta idea: cada $2^i$-ésimo nodo posee una referencia al nodo $2^i$ posiciones más adelante en la lista. Luego, la búsqueda de una clave $c$ se realiza análogamente a la búsqueda binaria: para cada nivel $i$, existen $2$ posibles rangos en los que podría encontrarse la clave, y se determina en cuál comparándola con el elemento en el medio. Por ende, se examinan a lo sumo $\log_2(n)$, y el número total de referencias es solo el doble de una lista enlazada tradicional.
 
-Sin embargo, estas estructuras son demasiado rígidas, ya que es muy costoso mantener el invariante a la hora de insertar o borrar claves. Las skip lists normales \textit{randomizan} el requerimiento: al insertar un nodo, este es promocionado al nivel superior con una probabilidad de $\frac{1}{2}$ iterativamente (se frena cuando deja de ser promocionado o cuando llega al último nivel). Esto permite que la distribución de nodos en cada nivel sea equivalente a la de las skip lists perfectas, lo cual produce un costo de búsqueda promedio de $\BigO{log{n}}$.
+Sin embargo, estas estructuras son demasiado rígidas, ya que es muy costoso mantener el invariante a la hora de insertar o borrar claves. Las skip lists normales \textit{randomizan} el requerimiento: al insertar un nodo, este es promocionado al nivel superior con una probabilidad de $\frac{1}{2}$ iterativamente (se frena cuando deja de ser promocionado o cuando llega al último nivel). Esto permite que la distribución de nodos en cada nivel sea equivalente a la de las skip lists perfectas, lo cual produce un costo de búsqueda promedio de $\BigO{\log{n}}$.
 
 \subsection{Splay trees}
 
@@ -1013,13 +1014,13 @@ Por otro lado, los \textit{splay trees} son ABBs auto-ajustantes que mueven cada
             \centering
             \textbf{Rotación Zig-Zag}\par\medskip
             \includegraphics[width=0.7\textwidth]{rotacion_zig_zag.png}
-            \caption*{Diagrama de una rotación zig-zag}
+            \caption*{Diagrama de una rotación zig-zag.}
         \end{figure}
         \begin{figure}[H]
             \centering
             \textbf{Rotación Zig-Zig}\par\medskip
             \includegraphics[width=0.7\textwidth]{rotacion_zig_zig.png}
-            \caption*{Diagrama de una rotación zig-zig}
+            \caption*{Diagrama de una rotación zig-zig.}
         \end{figure}
         Estas rotaciones se aplican hasta mover el elemento hasta la raíz.
 \end{itemize}
@@ -1034,10 +1035,16 @@ El análisis \textit{amortizado} permite asegurar garantías de la complejidad d
 
 % Lo demás no lo explica suficiente como para escribirlo
 
+
+
 \appendix
 
 \section{Apéndice -- Tablas}
 
+
+
 \label{table-dict-complexities}
+
+
 
 \end{document}
