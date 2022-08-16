@@ -24,6 +24,11 @@
   urlcolor=green!70!black
 }
 
+\captionsetup[table]{%
+  font=small,%
+  justification=centering,%
+  width=0.6\textwidth
+}
 
 \newcommand{\BigO}[1]{{\mathcal{O}(#1)}}
 \newcommand{\BigOmega}[1]{{\Omega(#1)}}
@@ -34,7 +39,7 @@
 
 
 \title{Resumen para Algoritmos y Estructuras de Datos II}
-\author{Tomás Spognardi}
+\author{Tomás Spognardi y Sofía Goldberg}
 \date{\today}
 
 \begin{document}
@@ -852,13 +857,13 @@ Esta metodología tiene sentido siempre y cuando la división y combinación sea
     \begin{algorithmic}
         \Function{DyC}{\textbf{instancia} $X$}
         \If{$X$ es suficientemente chico} \Comment{Caso Base}
-            \State \Return \textsc{AdHoc}($X$) 
+        \State \Return \textsc{AdHoc}($X$)
         \Else \Comment{Caso Recursivo}
-            \State $X_1, X_2, ..., X_k \gets \textsc{Descomponer}(X)$
-            \For{$i \in \{1, 2, ..., k\}$}
-            \State $Y_i \gets DC(X_i)$
-            \EndFor
-            \State \Return \textsc{Combinar}($Y_1, Y_2, ..., Y_k$)
+        \State $X_1, X_2, ..., X_k \gets \textsc{Descomponer}(X)$
+        \For{$i \in \{1, 2, ..., k\}$}
+        \State $Y_i \gets DC(X_i)$
+        \EndFor
+        \State \Return \textsc{Combinar}($Y_1, Y_2, ..., Y_k$)
         \EndIf
         \EndFunction
     \end{algorithmic}
@@ -868,23 +873,23 @@ Esta metodología tiene sentido siempre y cuando la división y combinación sea
 
 En un algoritmo típico de DyC, se divide el problema en $a$ subproblemas de tamaño $\frac{n}{c}$, y el costo de la división en sí junto con la combinación está dado por una función $f(n)$. Si $f(n) = bn^d$, entonces se tiene:
 \begin{align*}
-    T(n) & = aT\left(\frac{n}{c}\right) + bn^d \\
+    T(n) & = aT\left(\frac{n}{c}\right) + bn^d                                     \\
     T(n) & = bn^d \left(\sum_{i=0}^{\log_c{n}} \left(\frac{a}{c^d}\right)^i\right)
 \end{align*}
 
 Esta recurrencia puede ser resuelta a través de un análisis de casos:
 \begin{itemize}
     \item Cuando $a = 1, d = 0$ (un solo subproblema y combinación de costo constante, como en la búsqueda binaria):
-        $$T(n) \in \BigO{\log{n}}$$
+          $$T(n) \in \BigO{\log{n}}$$
     \item Cuando $d = 1$ y:
-     \begin{itemize}
-        \item $a < c$ (``pocos subproblemas''):
-            $$T(n) \in \BigO{n}$$
-        \item $a = c$ (``conquer lineal'', como en merge sort):
-            $$T(n) \in \BigO{n\log{n}}$$
-        \item $a > c$ (``muchos subproblemas''):
-            $$T(n) \in \BigO{n^{\log_c{a}}}$$
-     \end{itemize}
+          \begin{itemize}
+              \item $a < c$ (``pocos subproblemas''):
+                    $$T(n) \in \BigO{n}$$
+              \item $a = c$ (``conquer lineal'', como en merge sort):
+                    $$T(n) \in \BigO{n\log{n}}$$
+              \item $a > c$ (``muchos subproblemas''):
+                    $$T(n) \in \BigO{n^{\log_c{a}}}$$
+          \end{itemize}
 \end{itemize}
 
 Para otros costos de conquer $f(n)$, se puede aplicar el \textbf{Teorema Maestro}:
@@ -892,21 +897,21 @@ Para otros costos de conquer $f(n)$, se puede aplicar el \textbf{Teorema Maestro
 \begin{theorem*}
     Si se tiene una relación de recurrencia de la siguiente forma:
     $$
-    T(n) =
-    \begin{cases}
-        a T\left(\frac{n}{c}\right) + f(n) & \text{si } n > 1 \\
-        1                       & \text{si } n = 1
-    \end{cases}
+        T(n) =
+        \begin{cases}
+            a T\left(\frac{n}{c}\right) + f(n) & \text{si } n > 1 \\
+            1                                  & \text{si } n = 1
+        \end{cases}
     $$
 
     Su fórmula cerrada es:
     \begin{enumerate}
         \item Cuando $f(n) \in \BigO{n^{\log_c{a} - \epsilon}}$ para algún $\epsilon > 0$,
-            $$T(n) \in \BigTheta{n^{\log_c{a}}}$$
+              $$T(n) \in \BigTheta{n^{\log_c{a}}}$$
         \item Cuando $f(n) \in \BigTheta{n^{\log_c{a}}}$,
-            $$T(n) \in \BigTheta{n^{\log_c{a}} \log{n}}$$
+              $$T(n) \in \BigTheta{n^{\log_c{a}} \log{n}}$$
         \item Cuando $f(n) \in \BigOmega{n^{\log_c{a} + \epsilon}}$ y $a f\left(\frac{n}{c}\right) \leq k f(n)$ para $k < 1$ y $n$ suficientemente grande,
-            $$T(n) \in \BigTheta{f(n)}$$
+              $$T(n) \in \BigTheta{f(n)}$$
     \end{enumerate}
 
     En los casos 1. y 3., se cumple $T(n) \in \BigTheta{f(n) + n^{\log_c{a}}}$.
@@ -973,7 +978,7 @@ Un caso particular de los B-Trees son los \textit{Árboles 2-3-4}, donde cada no
     \item El hijo izquierdo contiene todas las claves menores a $c_1$.
     \item El hijo medio contiene todas las claves entre $c_1$ y $c_2$.
     \item El hijo derecho contiene todas las claves mayores a $c_2$.
-\end{itemize} 
+\end{itemize}
 
 Para insertar un nuevo valor, se encuentra el nodo correspondiente. Si está saturado (es un 4-nodo), se \textit{parte} en 2 nodos y una de las claves se inserta en el nodo de arriba, partiéndolo si es necesario, y así sucesivamente. Otra posible solución es partir preventivamente todos los 4-nodos que se encuentren en el camino de descenso de la clave, asegurando que en la inserción final habrá lugar en el nodo padre.
 
@@ -1010,19 +1015,19 @@ Por otro lado, los \textit{splay trees} son ABBs auto-ajustantes que mueven cada
     \item Si se accede a la raíz del árbol, no se hace nada.
     \item Si se accede a un hijo de la raíz, se realiza una rotación simple para ponerlo en la raíz.
     \item Si se accede a $k$, y su padre no es la raíz, hay $2$ casos:
-        \begin{figure}[H]
-            \centering
-            \textbf{Rotación Zig-Zag}\par\medskip
-            \includegraphics[width=0.7\textwidth]{rotacion_zig_zag.png}
-            \caption*{Diagrama de una rotación zig-zag.}
-        \end{figure}
-        \begin{figure}[H]
-            \centering
-            \textbf{Rotación Zig-Zig}\par\medskip
-            \includegraphics[width=0.7\textwidth]{rotacion_zig_zig.png}
-            \caption*{Diagrama de una rotación zig-zig.}
-        \end{figure}
-        Estas rotaciones se aplican hasta mover el elemento hasta la raíz.
+          \begin{figure}[H]
+              \centering
+              \textbf{Rotación Zig-Zag}\par\medskip
+              \includegraphics[width=0.7\textwidth]{rotacion_zig_zag.png}
+              \caption*{Diagrama de una rotación zig-zag.}
+          \end{figure}
+          \begin{figure}[H]
+              \centering
+              \textbf{Rotación Zig-Zig}\par\medskip
+              \includegraphics[width=0.7\textwidth]{rotacion_zig_zig.png}
+              \caption*{Diagrama de una rotación zig-zig.}
+          \end{figure}
+          Estas rotaciones se aplican hasta mover el elemento hasta la raíz.
 \end{itemize}
 
 La inserción se realiza como en cualquier otro ABB, solo que se realizan las operaciones de rotación para que el elemento quede en la raíz. Para borrar un elemento, primero se lo busca, lo cual lo deja en la raíz, luego se busca el mayor elemento del subárbol izquierdo, que pasa a ser la nueva raíz, como ese elemento era un antecesor inmediato, no tiene subárbol derecho, así que el subárbol derecho original queda como nuevo subárbol derecho.
@@ -1041,10 +1046,56 @@ El análisis \textit{amortizado} permite asegurar garantías de la complejidad d
 
 \section{Apéndice -- Tablas}
 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}\hline
+        \multirow{2}{*}{Nombre} & \multicolumn{3}{|c|}{Complejidad Temporal} & \multirow{2}{*}{Espacio Adicional} & \multirow{2}{*}{Estabilidad}                                    \\ \cline{2-4}
+                                & Caso Mejor                                 & Caso Medio                         & Caso Peor                    &                      &           \\
+        \hline
+        Selection Sort          & $\BigOmega{n^2}$                           & $\BigTheta{n^2}$                   & $\BigO{n^2}$                 & $ \BigO{1} $         & Inestable \\
+        \hline
+        Insertion Sort          & $\BigOmega{n}$                             & $\BigTheta{n^2}$                   & $\BigO{n^2}$                 & $ \BigO{1} $         & Estable   \\
+        \hline
+        Heap Sort               & $\BigOmega{n \log{n}}$                     & $\BigTheta{n \log{n}}$             & $\BigO{n \log{n}}$           & $ \BigO{1} $         & Inestable \\
+        \hline
+        Merge Sort              & $\BigOmega{n \log{n}}$                     & $\BigTheta{n \log{n}}$             & $\BigO{n \log{n}}$           & $ \BigO{n} $         & Estable   \\
+        \hline
+        Quick Sort              & $\BigOmega{n \log{n}}$                     & $\BigTheta{n \log{n}}$             & $\BigO{n^2}$                 & $ \BigO{\log{n}} $   & Inestable \\
+        \hline
+        Counting Sort           & $\BigOmega{n+M}$                           & $\BigTheta{n+M}$                   & $\BigO{n+M}$                 & $ \BigO{M} $         & Estable   \\
+        \hline
+        Radix Sort              & $\BigOmega{n\log{M}}$                      & $\BigTheta{n\log{M}}$              & $\BigO{n\log{M}}$            & $ \BigO{n+\log{M}} $ & Estable   \\
+        \hline
+    \end{tabular}
+    \caption*{Algoritmos de ordenamiento. Si $A$ es el arreglo de números, $n := |A|$ y $M := \max A - \min A$.}
+    \label{tab:sorting}
+\end{table}
 
-
-\label{table-dict-complexities}
-
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}\hline
+        Nombre         & Insertar         & Buscar           & Eliminar         \\
+        \hline
+        ABB            & $\BigO{n}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+        AVL            & $\BigO{\log{n}}$ & $\BigO{\log{n}}$ & $\BigO{\log{n}}$ \\
+        \hline
+        Tries          & $\BigO{k}$       & $\BigO{k}$       & $\BigO{k}$       \\
+        \hline
+        Tabla de Hash  & $\BigO{n}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+        Arreglo        & $\BigO{1}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+        Lista enlazada & $\BigO{n}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+        Skip Lists     & $\BigO{n}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+        Splay Trees    & $\BigO{n}$       & $\BigO{n}$       & $\BigO{n}$       \\
+        \hline
+    \end{tabular}
+    \caption*{Representación de Conjunto y Diccionario. En el caso de los Tries, $k$ es el tamaño de la clave más larga.}
+    \label{table-dict-complexities}
+\end{table}
 
 
 \end{document}
