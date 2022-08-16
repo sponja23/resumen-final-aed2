@@ -1,7 +1,10 @@
 # From https://gist.github.com/rosvik/c733af3a08516ae0bd61b5f81838f704
 
 name: Build LaTeX document
-on: [push]
+on:
+  push:
+    paths:
+      - 'resumen.tex'
 jobs:
   build_latex:
     runs-on: ubuntu-latest
